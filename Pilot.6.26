@@ -1,6 +1,7 @@
 library("twitteR")
 library("wordcloud")
 library("tm")
+library("rtweet")
 
 
 consumer_key <- 'VPXR0O6pTFZvRWL95fKp736s4'
