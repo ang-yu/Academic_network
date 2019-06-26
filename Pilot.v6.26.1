@@ -113,7 +113,7 @@ t.test(self_data_merged$ratio[self_data_merged$gender=="F"], self_data_merged$ra
 t.test(self_data_merged$followersCount[name_list$generation==1], self_data_merged$followersCount[name_list$generation==3])
       #t = -1.0405, df = 94.888, p-value = 0.3007
 
-#for all 141 faculty in the dataset get friends
+#for all faculty in the dataset get friends
 friends <- list()
 for (a in 1:length(id)){
   friends[[a]] <- get_friends(id[a])
