@@ -118,18 +118,35 @@ t.test(self_data_merged$ratio[self_data_merged$gender=="F" & self_data_merged$ac
 t.test(self_data_merged$followersCount[name_list$generation==1], self_data_merged$followersCount[name_list$generation==3])
       #t = -1.0405, df = 94.888, p-value = 0.3007
 
-#for all faculty in the dataset get friends
+##notes: friends data manually created
+install.packages('here')
+install.packages("readr")
+library(here)
+library(readr)
+write_csv(friends, here("twitter_friends.csv"))
+
+#for all 141 faculty in the dataset get friends
 friends <- list()
 for (a in 1:length(id)){
-  friends[[a]] <- get_friends(id[a])
-
-followers <- list()
-for (b in 1:length(id)){
-  followers[[b]] <- get_followers(id[b])
-  followers[[b]]$user <-  id[b]
-
-  pause if divisible by 15
-  if (b %% 15 == 0){
-    Sys.sleep(15*60) # must enter time in seconds
-  
+  friends[[a]] <- get_friends(id[a], retryonratelimit = T)
 }
+
+# Combine data tables in list
+friends <- bind_rows(friends) %>% 
+  rename(friend = user_id)
+
+write_csv(friends, here("twitter_friends.csv"))
+
+
+#for all 130 faculty in the dataset get followers
+followers <- list()
+for (a in 16:length(id)){
+  followers[[a]] <- get_followers(id[a], retryonratelimit = T)
+  followers[[a]][2] <-  id[a]
+}
+
+# Combine data tables in list
+followers <- bind_rows(followers) %>% 
+  rename(follower = user_id)
+
+write_csv(followers, here("twitter_follower.csv"))
