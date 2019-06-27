@@ -1,1 +1,106 @@
+### get friend IDs: friends whose follow a user
+friends <- read.csv("friends_list.csv", head=T)
+friends <- friends[-1]
+friends_soci <- friends[friends$user_id %in% friends$user,]
+
+length(unique(friends$user)) # 126
+length(unique(friends_soci$user)) # 113
+
+########### social network analysis prep ####
+install.packages("igraph")
+library(igraph)
+install.packages("ggplot2")
+library(ggplot2)
+
+##### make an edgelist and graph file for friends ID data ######
+edgelist_friend <- as.matrix(friends_soci)
+graph_friend <- graph.data.frame(edgelist_friend)
+
+plot(graph_friend, edge.color='black', edge.arrow.size = 0.25, layout=layout.kamada.kawai(graph_friend), niter=500) # need to change a vertex size and type of layout
+plot(graph_friend, vertex.label=NA, vertex.size = 10, vertex.color = "red", edge.color='black', edge.arrow.size = 0.25, layout=layout.kamada.kawai(graph_friend), niter=1000) # need to change a vertex size and type of layout
+
+# calculate basic network descriptive statistics - density, average path length, transitivity
+friend_density <- graph.density(graph_friend, loop=F)
+friend_density
+friend_apl <- mean_distance(graph_friend)
+friend_apl
+friend_transitivity <- transitivity(graph_friend)
+friend_transitivity
+
+# calculate centrality measure - closeness, betweenness, eigen vector
+## degree centrality:
+V(graph_friend_simple)$indegree <- centr_degree(graph_friend_simple, mode = "in")$res
+V(graph_friend_simple)$outdegree <- centr_degree(graph_friend_simple, mode = "out")$res
+
+
+## closeness: how many steps is required to access every other vertex from a given vertex.
+# 1) all
+friend_closeness <- closeness(graph_friend, mode="all") 
+friend_closeness <- as.data.frame(friend_closeness)
+friend_closeness$user <- rownames(friend_closeness) 
+head(friend_closeness)
+# 2) in coming direction
+friend_incloseness <- closeness(graph_friend, mode="in") 
+friend_incloseness <- as.data.frame(friend_incloseness)
+friend_incloseness$user <- rownames(friend_incloseness) 
+head(friend_incloseness)
+# 3) out going direction
+friend_outcloseness <- closeness(graph_friend, mode="out") 
+friend_outcloseness <- as.data.frame(friend_outcloseness)
+friend_outcloseness$user <- rownames(friend_outcloseness) 
+head(friend_outcloseness)
+
+## betweenness: the number of geodesics (shortest paths) going through a vertex or an edge
+# 1) no direction
+friend_between <- betweenness(graph_friend, directed=F)
+friend_between <- as.data.frame(friend_between)
+friend_between$user <- rownames(friend_between)
+colnames(friend_between)[1] <- "betweenness_nodirection"
+friend_between <- friend_between[, c(2:1)]
+head(friend_between)
+# 2) direction
+friend_direct_between <- betweenness(graph_friend, directed = T)
+friend_direct_between <- as.data.frame(friend_direct_between)
+friend_direct_between$user <- rownames(friend_direct_between)
+colnames(friend_direct_between)[1] <- "betweenness_direction"
+friend_direct_between <- friend_direct_between[,c(2:1)]
+head(friend_direct_between)
+
+## eigen vector: a measure of the influence of a node in a network (how much connected to an influencer)
+# 1) no direction
+friend_eigen <- eigen_centrality(graph_friend)
+friend_eigen  <- as.data.frame(friend_eigen)
+friend_eigen$user <- rownames(friend_eigen)
+which(colnames(friend_eigen)=="user")
+colnames(friend_eigen)[23] <- "user"
+friend_eigen <- friend_eigen[, c(23,1)]
+colnames(friend_eigen)[2] <- "eigen_vector"
+head(friend_eigen)
+# 2) direction 
+friend_direction_eigen <- eigen_centrality(graph_friend, directed=T)
+friend_directed_eigen  <- as.data.frame(friend_direction_eigen)
+friend_directed_eigen$user <- rownames(friend_directed_eigen)
+which(colnames(friend_directed_eigen)=="user")
+colnames(friend_directed_eigen)[24] <- "user"
+friend_directed_eigen <- friend_directed_eigen[, c(24,1)]
+colnames(friend_directed_eigen)[2] <- "eigen_directed_vector"
+head(friend_directed_eigen)
+
+# make a single table for centrality measures
+friend_closeness3 <- merge(friend_closeness, friend_incloseness, by="user", all=T)
+friend_closeness3 <- merge(friend_closeness3, friend_outcloseness, by="user", all =T)
+
+friend_eigen_both <- merge(friend_eigen, friend_directed_eigen, by="user", all =T)
+
+friend_totalcentrality <- merge(friend_closeness3, friend_eigen_both, by="user", all =T)
+write.csv(friend_totalcentrality, "centrality.csv", row.names = F)
+
+friend_all <- merge(friend_totalcentrality, self_data_merged, by.x="user", by.y="id", all.x=T)
+
+# calculate t-test by gender
+t.test(friend_all$eigen_vector[friend_all$gender=="F"], friend_all$eigen_vector[friend_all$gender=="M"]) # t = -1.4096, df = 104.95, p-value = 0.1616,mean of x mean of y 0.4033045 0.4817727 
+t.test(friend_all$eigen_directed_vector[friend_all$gender=="F"], friend_all$eigen_directed_vector[friend_all$gender=="M"]) # t = -1.8451, df = 108, p-value = 0.06776, mean of x mean of y 0.3572128 0.4562652 
+t.test(friend_all$friend_closeness[friend_all$gender=="F"], friend_all$friend_closeness[friend_all$gender=="M"]) # t = -1.0471, df = 105.43, p-value = 0.2975,   mean of x   mean of y 0.004862995 0.005014183 
+t.test(friend_all$friend_incloseness[friend_all$gender=="F"], friend_all$friend_incloseness[friend_all$gender=="M"]) # t = -1.0232, df = 102.97, p-value = 0.3086,  mean of x   mean of y 0.001087101 0.001095238 
+t.test(friend_all$friend_outcloseness[friend_all$gender=="F"], friend_all$friend_outcloseness[friend_all$gender=="M"]) # t = -0.82422, df = 97.019, p-value = 0.4118,  mean of x   mean of y0.004329361 0.004515145 
 
