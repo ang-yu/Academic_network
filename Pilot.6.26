@@ -41,8 +41,8 @@ name_list$generation[2000<name_list$job_yr & name_list$job_yr<=2010] <- 2
 name_list$generation[2010<name_list$job_yr] <- 3
 
 #generation x has_twitter 
-table(name_list$has_twitter, ap_names$generation)
-chisq.test(name_list$has_twitter, ap_names$generation)
+table(name_list$has_twitter, name_list$generation)
+chisq.test(name_list$has_twitter, name_list$generation)
     #X-squared = 23.295, df = 2, p-value = 8.739e-06
 
 #create twitter_list
