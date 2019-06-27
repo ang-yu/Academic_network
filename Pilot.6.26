@@ -150,3 +150,7 @@ followers <- bind_rows(followers) %>%
   rename(follower = user_id)
 
 write_csv(followers, here("twitter_follower.csv"))
+
+
+# Select friends of sociology (06272019 10:33am friends_list)
+friends_sociology <- friends_list[friends_list$user_id %in% friends_list$user,]
