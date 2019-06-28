@@ -153,7 +153,7 @@ write_csv(followers, here("twitter_follower.csv"))
 
 
 # Select friends of sociology (06272019 10:33am friends_list)
-friends_sociology <- friends_list[friends_list$user_id %in% friends_list$user,]
+friends_sociology <- friends[friends$user_id %in% friends$user,]
 
 write_csv(friends_sociology, here("soc_friends.csv"))
 
