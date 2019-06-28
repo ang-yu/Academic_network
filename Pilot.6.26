@@ -125,7 +125,7 @@ library(here)
 library(readr)
 write_csv(friends, here("twitter_friends.csv"))
 
-#for all 141 faculty in the dataset get friends
+#for all 130 faculty in the dataset get friends
 friends <- list()
 for (a in 1:length(id)){
   friends[[a]] <- get_friends(id[a], retryonratelimit = T)
@@ -228,3 +228,6 @@ E(net)$edge.size <- .1
 #set the network layout: mds
 graph_attr(net, "layout") <- layout_with_mds
 plot(net) 
+
+legend(x=-1.5, y=-1.1, c("Male","Female"), pch=21,
+       col="#777777", pt.bg=colrs, pt.cex=2, cex=.8, bty="n", ncol=1)
