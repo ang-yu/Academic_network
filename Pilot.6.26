@@ -140,17 +140,26 @@ write_csv(friends, here("twitter_friends.csv"))
 
 #for all 130 faculty in the dataset get followers
 followers <- list()
-for (a in 16:length(id)){
+for (a in 1:length(id)){
   followers[[a]] <- get_followers(id[a], retryonratelimit = T)
   followers[[a]][2] <-  id[a]
 }
 
 # Combine data tables in list
 followers <- bind_rows(followers) %>% 
-  rename(follower = user_id)
-
+  rename(follower = user_id) %>%
+  rename(user=V2)
+  
 write_csv(followers, here("twitter_follower.csv"))
 
+#import academic_followers and see the unique names
+academic_followers <-read.csv("/Users/Ginger/academic_followers.csv", header=T) 
+library(dplyr)
+unique <- tapply(academic_followers$follower, academic_followers$user, FUN = function(x) length(unique(x)))
+
+####Friends Networks Graph####
+#import friends list
+friends <-read.csv("/Users/Ginger/friends.csv", header=T)
 
 # Select friends of sociology (06272019 10:33am friends_list)
 friends_sociology <- friends[friends$user_id %in% friends$user,]
@@ -163,7 +172,10 @@ view(soc_friends)
 
 write.csv(soc_friends,here("soc_friends_gender.csv"))
 
-
+#looking for reciprical ties
+#soc_friends$ab <- paste(soc_friends$user, soc_friends$user_id, sep = "-")
+#soc_friends$ba <- paste(soc_friends$user_id, soc_friends$user, sep = "-")
+#soc_friends$mutual <- ifelse(soc_friends$ba %in% soc_friends$ab, 1, 0)
 
 library(tidyverse)
 edge_list <- tibble(from = c(soc_friends$user), to = c(soc_friends$user_id))
@@ -172,8 +184,8 @@ colnames(node_list)[2] <- "gender"
 colnames(node_list)[1] <- "name"
 
 #edge_list delete "938906192981757952"
-edge_list <- edge_list[!(edge_list$to=="938906192981757952"),]
-view(edge_list)
+#edge_list <- edge_list[!(edge_list$to=="938906192981757952"),]
+#view(edge_list)
 
 node_list <- unique(node_list)
 head(edge_list)
@@ -202,12 +214,12 @@ V(net)       # The vertices of the "net" object
 V(net)$gender # Vertex attribute "gender"
 
 # Get an edge list or a matrix:
-as_edgelist(net, names=T)
-as_adjacency_matrix(net)
+#as_edgelist(net, names=T)
+#as_adjacency_matrix(net)
 
 # Or data frames describing nodes and edges:
-as_data_frame(net, what="edges")
-as_data_frame(net, what="vertices")
+#as_data_frame(net, what="edges")
+#as_data_frame(net, what="vertices")
 
 #plotting
 
