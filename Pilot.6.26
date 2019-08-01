@@ -125,7 +125,7 @@ library(here)
 library(readr)
 write_csv(friends, here("twitter_friends.csv"))
 
-#for all 130 faculty in the dataset get friends
+#for all 136 faculty in the dataset get friends
 friends <- list()
 for (a in 1:length(id)){
   friends[[a]] <- get_friends(id[a], retryonratelimit = T)
@@ -138,7 +138,7 @@ friends <- bind_rows(friends) %>%
 write_csv(friends, here("twitter_friends.csv"))
 
 
-#for all 130 faculty in the dataset get followers
+#for all 136 faculty in the dataset get followers
 followers <- list()
 for (a in 1:length(id)){
   followers[[a]] <- get_followers(id[a], retryonratelimit = T)
