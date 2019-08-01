@@ -194,16 +194,18 @@ head(node_list)
 sum(!(edge_list$from %in% node_list$name))
 sum(!(edge_list$to %in% node_list$name))
 
-edge_list$to[!(edge_list$to %in% node_list$name)]
+edge_list$to[!(edge_list$to %in% node_list$name)] # what is this for?
 
-node_list$id
+node_list$id # what is this for?
+
+# comment on July 31, 2019: may need to drop some in edge_list$to if edge_list$to is not in node_list$name
 
 #creating igraph objects
 #recode gender "M" = 1, "F" = 2
 node_list <- node_list %>%
   mutate(gender.r = recode(gender,"M" = 1, "F" = 2))
 
-view(node_list)
+View(node_list)
 
 library('igraph')
 net <- graph_from_data_frame(d=edge_list, vertices=unique(node_list), directed=T) 
