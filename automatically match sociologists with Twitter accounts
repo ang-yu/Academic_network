@@ -1,5 +1,6 @@
 
 # V1: AY 08/04/19
+# V1: AY 08/05/19
 
 
 # This is for matching the 1007 sociologists in our Top-40 programs sample with Twitter accounts (first determining whether they have Twitter)
@@ -242,16 +243,15 @@ sum(!is.na(matched_checked$identified))  # using ASA friends, we are able to ide
 
 matched_checked <- matched_checked[,c("ID","identified")]
 
-name_list_unidentified <- merge(name_list, matched_checked, by = "ID")
+name_list_unidentified <- merge(name_list_unidentified, matched_checked, by = "ID")
 
-name_list_unidentified <- name_list_unidentified[,-6]
-colnames(name_list_unidentified)[6] <- "identified"
+name_list_unidentified <- name_list_unidentified[,-c(2,6,8,9)]
 
 name_list <- rbind(name_list_identified, name_list_unidentified)
 sum(!is.na(name_list$identified))   # Now, 175 identified. 
 
 write.csv(name_list, "temp_name_list.csv", row.names = F)
-name_list <- read.csv("temp_name_list.csv")
+name_list <- read.csv("temp_name_list.csv", stringsAsFactors = F)
 
 name_list_identified.1 <- name_list[!is.na(name_list$identified),]
 name_list_unidentified.1 <- name_list[is.na(name_list$identified),]
@@ -276,8 +276,7 @@ name_list_unidentified.1_matched_checked <- read.csv("name_list_unidentified.1_m
 
 colnames(name_list_unidentified.1_matched_checked)[8] <- "screenName"
 
-name_list_unidentified.1_matched_checked <- name_list_unidentified.1_matched_checked[,-c(6,7)]
-name_list_unidentified.1_matched_checked <- name_list_unidentified.1_matched_checked[,-7]
+name_list_unidentified.1_matched_checked <- name_list_unidentified.1_matched_checked[,-c(6,7,9)]
 
 name_list_automatched <- rbind(name_list_identified.1, name_list_unidentified.1_matched_checked)
 
