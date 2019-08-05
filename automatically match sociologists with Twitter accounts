@@ -1,13 +1,23 @@
 
+# V1: AY 08/04/19
+
+
+# This is for matching the 1007 sociologists in our Top-40 programs sample with Twitter accounts (first determining whether they have Twitter)
+# Before manually searching for their Twitter accounts, we first tried to do the matching it in some automatic ways.
+# With the code below, we first searched the family names of the faculties in the followers of ASR's Twitter account,
+# then we manually checked whether the resulting Twitter accounts are indeed handles of the real people in our sample
+# Second, we used the same strategy with Twitter accounts that are followed by the ASAnews account for those who remained un-matched.
+# Third, we tried to identify those who remain un-matched after the two steps above using data from our Pilot project, which contain already matched pairs and were collected in late June, 19 at the SICSS UCLA.
+# After these three steps, we have 227 people who have identified Twitter accounts and 102 people who we know don't have an account.
+# In the name_list_automatched file, the variable 'identified' = 1 if the person is successfully matched with a Twitter account 
+# = 0  if we know the person does not have a Twitter account. Missing if we don't know whether this person has an account or not at this point. 
 
 setwd("~/Downloads/Academic Network")
-
 
 library("twitteR")
 library("wordcloud")
 library("tm")
 library("rtweet")
-
 
 consumer_key <- 'VPXR0O6pTFZvRWL95fKp736s4'
 consumer_secret <- '5Bb1TDnsCcC1U0BfHfALucPAdugFmK6G9wgvyElPue9LDJo5Us'
@@ -26,10 +36,8 @@ token <- create_token(
   access_token,
   access_secret)
 
-
 # First we use ASR followers to identify sociologists' accounts
 asr_followers <- get_followers("asr_journal")  # 3780 followers of ASR as of 08/03/19
-
 
 # get the profiles of all ASR followers
 lookup_vector <- vector()
@@ -290,4 +298,6 @@ write.csv(yet_to_be_done, "yet_to_be_done.csv", row.names = F)
 # two John Logan at Wisconsin and Brown
 # two Jennifer Hook at USC and PSU
 # two Jennifer Lee at Indiana and Columbia
+
+
 
