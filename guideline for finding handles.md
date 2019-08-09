@@ -2,7 +2,7 @@ Building Academic Networks Dataset: A Code Guide to Identifying Faculty Twitter 
 
 V1. screenName 
 
-Screen name is the username of the Twitter account. The format is the username with no @. 
+screenName is the username of the Twitter account. The format is the username with no @. 
 
 Instructions:
 
@@ -29,5 +29,5 @@ V3. private.account
 
 private.account is a dummy variable to indicate if the Twitter account is public or private.
 
-    1. private account (you can see a lock next to th display name)
-    0. public account
+    1 private account (you can see a lock next to th display name)
+    0 public account
