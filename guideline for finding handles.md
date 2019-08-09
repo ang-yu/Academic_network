@@ -4,6 +4,7 @@ V1. screenName
 Screen name is the username of the Twitter account. The format is the username with no @. 
 
 Instructions:
+
     1. Search for the name with and without the middle name under "People" tab of Twitter's own search tool
 
     2. If multiple accounts appear, check each of them to see whether it is the person who are looking for. 
@@ -16,6 +17,14 @@ Instructions:
     4. Once we indentify the faculty's twitter account, copy paste the screenname (next to @) under the display name.
     
 V2. identified
-
+identified is a categorical variable to indicate how sure we are about the coding of screenName.
+    
+    1 Know for sure this person has Twitter;
+    0 Know for sure doesn’t;
+    NA Can’t be sure, need to revisit this case.
 
 V3. private.account
+private.account is a dummy variable to indicate if the Twitter account is public or private.
+
+    1. private account (you can see a lock next to th display name)
+    0. public account
