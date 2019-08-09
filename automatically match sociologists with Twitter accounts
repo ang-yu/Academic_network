@@ -1,6 +1,7 @@
 
 # V1: AY 08/04/19
-# V1: AY 08/05/19
+# V2: AY 08/05/19
+# V3: AY 08/09/19
 
 
 # This is for matching the 1007 sociologists in our Top-40 programs sample with Twitter accounts (first determining whether they have Twitter)
@@ -299,4 +300,19 @@ write.csv(yet_to_be_done, "yet_to_be_done.csv", row.names = F)
 # two Jennifer Lee at Indiana and Columbia
 
 
+#### Then we manually searched for accounts for people in "yet_to_be_done" and merged the two files back together
 
+yet <- read.csv("~/Downloads/Academic Network/yet_to_be_done_by four - yet_to_be_done_by four (3).csv", header=T, stringsAsFactors = F)
+
+auto <- read.csv("~/Downloads/Academic Network/name_list_automatched - name_list_automatched.csv", header=T, stringsAsFactors = F)
+
+yet <- yet[,1:5]
+auto <- auto[!is.na(auto$identified),1:5]
+
+merged <- rbind(auto, yet)
+
+sum(!is.na(merged$screenName))
+
+write.csv(merged, "top40_complete_080919.csv", row.names = F)
+
+# Hence, at this point, we have identified 445 account out of 1005 people (note that we deleted two rows in this final step due to duplicates and mistaken inclusion)
