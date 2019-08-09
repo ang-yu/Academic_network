@@ -1,6 +1,7 @@
 Building Academic Networks Dataset: A Code Guide to Identifying Faculty Twitter Accounts
 
 V1. screenName 
+
 Screen name is the username of the Twitter account. The format is the username with no @. 
 
 Instructions:
@@ -17,6 +18,7 @@ Instructions:
     4. Once we indentify the faculty's twitter account, copy paste the screenname (next to @) under the display name.
     
 V2. identified
+
 identified is a categorical variable to indicate how sure we are about the coding of screenName.
     
     1 Know for sure this person has Twitter;
@@ -24,6 +26,7 @@ identified is a categorical variable to indicate how sure we are about the codin
     NA Can’t be sure, need to revisit this case.
 
 V3. private.account
+
 private.account is a dummy variable to indicate if the Twitter account is public or private.
 
     1. private account (you can see a lock next to th display name)
