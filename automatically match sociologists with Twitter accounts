@@ -14,6 +14,8 @@
 # In the name_list_automatched file, the variable 'identified' = 1 if the person is successfully matched with a Twitter account 
 # = 0  if we know the person does not have a Twitter account. Missing if we don't know whether this person has an account or not at this point. 
 
+# Then we manually searched for accounts for people we are not sure about. As of 08/09/19, we've identified 445 account out of 1005 people. 
+
 setwd("~/Downloads/Academic Network")
 
 library("twitteR")
