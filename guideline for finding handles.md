@@ -36,8 +36,16 @@ private.account is a dummy variable to indicate if the Twitter account is public
 
 preliminary criterion for determining whether the account matches the person:
 
+1. this account has a description that clearly says the person's identity. 2. this account follows at least 1 sociologist 3. this account follows the account of the person's department 4. this account has a profile photo that matches the person 5. this account has tweeted sociological stuff. 6. there are more than 3 sociologists following this account. 
+
+If any of these 6 are met, then the account is identifed to belong to the person. 
+
+At the data cleaning stage, we impose two more criteria:
+
 1. this account follows at least 10 accounts. 
+2. this account has tweeted something.
 
-2. this account has a description that clearly says the person's identity. 3. this account follows at least 1 sociologist 4. this account follows the account of the person's department 5. this account has a profile photo that matches the person 6. this account has tweeted sociological stuff. 7. there are more than 3 sociologists following this account. 
+The account will only be used for analysis if both criteria are met.
 
-If criterion 1 and any of criteria 2 to 7 are met, then the account is identifed to belong to the person. 
+
+
