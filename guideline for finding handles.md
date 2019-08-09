@@ -15,7 +15,7 @@ Instructions:
 
     3. If no account pops up, search under "Top" tab using name+sociology and name+school name to see if someone has tweeted to the faculty of interest. 
     
-    4. Once we indentify the faculty's twitter account, copy paste the screenname (next to @) under the display name.
+    4. Once we identify the faculty's twitter account, copy-paste the screenname (next to @) under the display name.
     
 V2. identified
 
