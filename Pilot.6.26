@@ -118,12 +118,12 @@ t.test(self_data_merged$ratio[self_data_merged$gender=="F" & self_data_merged$ac
 t.test(self_data_merged$followersCount[name_list$generation==1], self_data_merged$followersCount[name_list$generation==3])
       #t = -1.0405, df = 94.888, p-value = 0.3007
 
-##notes: friends data manually created
+
+#Get friend list
 install.packages('here')
 install.packages("readr")
 library(here)
 library(readr)
-write_csv(friends, here("twitter_friends.csv"))
 
 #for all 136 faculty in the dataset get friends
 friends <- list()
