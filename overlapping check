@@ -9,7 +9,7 @@ hannah <- hannah[order(hannah$name),]
 require(readxl)
 top40 <- read_excel("top40_complete_080919.xlsx", sheet=1)
 
-# make surname and first name - top40
+# make first name - top40
 top40.name.temp <- top40$Faculty.Name
 top40.name.temp <- trimws(top40$Faculty.Name, "r")
 top40.name.temp <- trimws(top40$Faculty.Name, "l")
@@ -42,16 +42,14 @@ hannah$surname <- surname_h
 top40$fullname <- paste(top40$first, top40$surname, sep = " ")
 hannah$fullname <- paste(hannah$first, hannah$surname, sep = " ")
 
-# correct other differences - lower/upper letters, middle names
-overlap1 <- hannah[hannah$name %in% top40$Faculty.Name,]
-overlap2 <- hannah[top40$Faculty.Name %in% hannah$name,]
+# merge hannah and top40 to see overlapping
 merge1 <- merge(hannah, top40, by=c("fullname"), all = T)
 bothoverlap <- merge1[!(is.na(merge1$cid)|is.na(merge1$ID)),]
 bothoverlap <- bothoverlap[order(bothoverlap$department),]
 
 write.csv(bothoverlap, "overlap.csv", row.names = F)
 
-# inspect who are overlapped and who aren't
+# inspect who are overlapped and who aren't - compare by department in hannah's (program in top40)
 merge2 <- merge1[,c(1:3, 19, 5,20,4, 6:22)]
 merge2 <- merge2[order(merge2$department, merge2$Program),]
 
