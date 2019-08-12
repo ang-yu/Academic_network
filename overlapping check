@@ -1,0 +1,58 @@
+# see overlapping between Hannah's and Top 40 sociologist list
+# latest update: 08112019
+
+setwd("~/Library/Mobile Documents/com~apple~CloudDocs/.Trash/Master Jihye/USC/Summer 2019/SICSS UCLA/group project")
+
+library(haven)
+hannah <- read_dta("SocData_for_sharing.dta")
+hannah <- hannah[order(hannah$name),]
+require(readxl)
+top40 <- read_excel("top40_complete_080919.xlsx", sheet=1)
+
+# make surname and first name - top40
+top40.name.temp <- top40$Faculty.Name
+top40.name.temp <- trimws(top40$Faculty.Name, "r")
+top40.name.temp <- trimws(top40$Faculty.Name, "l")
+firstname <- vector()
+
+for (i in 1:length(top40$Faculty.Name)) {
+  
+  firstname[i] <- head(strsplit(top40.name.temp[i], split=" ")[[1]], 1)
+  
+}
+top40$first <- firstname
+top40 <- top40[, c(-5)]
+
+# make surname and first name - hannah
+hannah.name.temp <- hannah$name
+hannah.name.temp <- trimws(hannah$name, "r")
+hannah.name.temp <- trimws(hannah$name, "l")
+surname_h <- vector()
+firstname_h <- vector()
+
+for (i in 1:length(hannah$name)) {
+  
+  firstname_h[i] <- head(strsplit(hannah.name.temp[i], split=" ")[[1]], 1)
+  surname_h[i] <-  tail(strsplit(hannah.name.temp[i], split=" ")[[1]], 1)
+}
+hannah$first <- firstname_h
+hannah$surname <- surname_h
+
+# create a new column - drop all middle name
+top40$fullname <- paste(top40$first, top40$surname, sep = " ")
+hannah$fullname <- paste(hannah$first, hannah$surname, sep = " ")
+
+# correct other differences - lower/upper letters, middle names
+overlap1 <- hannah[hannah$name %in% top40$Faculty.Name,]
+overlap2 <- hannah[top40$Faculty.Name %in% hannah$name,]
+merge1 <- merge(hannah, top40, by=c("fullname"), all = T)
+bothoverlap <- merge1[!(is.na(merge1$cid)|is.na(merge1$ID)),]
+bothoverlap <- bothoverlap[order(bothoverlap$department),]
+
+write.csv(bothoverlap, "overlap.csv", row.names = F)
+
+# inspect who are overlapped and who aren't
+merge2 <- merge1[,c(1:3, 19, 5,20,4, 6:22)]
+merge2 <- merge2[order(merge2$department, merge2$Program),]
+
+write.csv(merge2, "inspect_overlap.csv", row.names = F)
